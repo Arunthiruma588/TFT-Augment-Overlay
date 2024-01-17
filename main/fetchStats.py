@@ -210,3 +210,36 @@ def fetchStats():
             current_height = bottom
         
     driver.close()
+
+def getAugmentPlacement(augmentName, stage):
+    result = ""
+
+    try:
+        sqliteConnection = sqlite3.connect('Augment_Stats.db')
+        cursor = sqliteConnection.cursor()
+        # print("Connected to SQLite")
+
+        sqlite_getAugment = ""
+
+        if(stage == 2):
+            sqlite_getAugment = "SELECT first FROM AugmentTable WHERE augmentName=?;"
+        elif(stage == 3):
+            sqlite_getAugment = "SELECT second FROM AugmentTable WHERE augmentName=?;"
+        elif(stage == 4):
+            sqlite_getAugment = "SELECT third FROM AugmentTable WHERE augmentName=?;"
+
+        data_tuple = (augmentName,)
+        cursor.execute(sqlite_getAugment, data_tuple)
+        result = cursor.fetchall()
+        sqliteConnection.commit()
+        # print("Python Variables retrived from AugmentTable")
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to retrieve value from AugmentTable", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            # print("The SQLite connection is closed")
+    return result[0][0]
