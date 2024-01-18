@@ -1,9 +1,6 @@
 import sqlite3
 import time
 
-# From https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
-# and https://stackoverflow.com/questions/64717302/deprecationwarning-executable-path-has-been-deprecated-selenium-python
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service 
@@ -81,6 +78,9 @@ def insertVaribleIntoTable(augmentName, first, second, third):
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
+# From https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
+# and https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed
+
 def fetchStats():
     options = webdriver.ChromeOptions()
     # Runs Chrome browser as a background process (doesn't pop up since no GUI)
@@ -113,8 +113,8 @@ def fetchStats():
 
     # print(augNames)
 
-    text="."
-    blank="—"
+    # text="."
+    # blank="—"
 
     indexofStat = 0
     statCounter = 0;
