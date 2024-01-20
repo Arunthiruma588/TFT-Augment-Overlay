@@ -211,6 +211,11 @@ def fetchStats():
         
     driver.close()
 
+# Function gets average placement form the SQLite3 database table
+# takes augment name as a string and stage number as an int ex: 2 (2-1 augment) and returns average placement as a string
+# example: getAugmentPlacement("Healing Orbs II", 3)
+# return: "4.45"
+
 def getAugmentPlacement(augmentName, stage):
     result = ""
 

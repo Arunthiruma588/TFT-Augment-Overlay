@@ -4,24 +4,19 @@ from overlay import *
 def main():
   # fetchStats()
 
-  # app = QApplication([])
+  data = [
+          ["Jeweled Lotus II", "4.43"],
+          ["Healing Orbs II", "4.53"],
+          ["Last Stand", "4.65"],
+    ]
 
-  # app.setStyleSheet("""
-  #     QLabel {
-  #         margin: 0px;
-  #         padding: 0px;
-  #         font-size: 20px;
-  #         color: "yellow";
-  #     }
-  # """)
-
-  # window = MainWindow(1920, 1080)
+  window = MainWindow(data, 1920, 1080)
   # window.createFirstAugmentLabel("4.76")
   # window.createSecondAugmentLabel("4.35")
   # window.createThirdAugmentLabel("4.60")
-  # window.show()  # IMPORTANT!!!!! Windows are hidden by default.
+  window.show()  # IMPORTANT!!!!! Windows are hidden by default.
 
-  # app.exec()
+  sys.exit(app.exec())
 
 if __name__ == "__main__":
   main()
