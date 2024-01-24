@@ -1,12 +1,18 @@
+<<<<<<< Updated upstream
 import time
 import sys
 from fetchStats import *
 from statsWindow import *
 from PyQt6.QtGui import QScreen
+=======
+#from fetchStats import *
+from overlay import *
+>>>>>>> Stashed changes
 
 def main():
   # fetchStats()
 
+<<<<<<< Updated upstream
   # Create application that runs the new window
   app = QApplication([])
 
@@ -79,6 +85,26 @@ def main():
 
   #Runs the whole script from above and app.exec() calls thsi and sys.exit stops the script from running after it goes through the whole code
   sys.exit(app.exec())
+=======
+  app = QApplication([])
+
+  app.setStyleSheet("""
+      QLabel {
+          margin: 0px;
+          padding: 0px;
+          font-size: 20px;
+          color: "yellow";
+       }
+  """)
+
+  window = MainWindow(3840, 2160)
+  window.createFirstAugmentLabel("4.76")
+  window.createSecondAugmentLabel("4.35")
+  window.createThirdAugmentLabel("4.60")
+  window.show()  # IMPORTANT!!!!! Windows are hidden by default.
+
+  app.exec()
+>>>>>>> Stashed changes
 
 if __name__ == "__main__":
   main()
