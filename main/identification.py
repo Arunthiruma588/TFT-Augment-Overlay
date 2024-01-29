@@ -8,18 +8,23 @@ import time
 import re
 import pyautogui
 
+import sys
+from fetchStats import *
+from statsWindow import *
+# from PyQt6.QtGui import QScreen
 
 
 def onscreen(path, precision=0.8):
     return search(path, precision)[0] != -1
 
 def augments():
+    fetchStats()
 
     screen_size = pyautogui.size()
     #print(screen_size[0])
     #print(screen_size[1])
     if screen_size[0] == 1920 and screen_size[1] == 1080:
-        print("1080p screen resloution")
+        print("1080p screen resolution")
         while not onscreen("./captures/1080p2-1.png"):
             #print("sleeping")
             time.sleep(2)
@@ -27,6 +32,17 @@ def augments():
         stage_two_augment_one_val = ""
         stage_two_augment_two_val = ""
         stage_two_augment_three_val = ""
+        app = QApplication([])
+        app.setStyleSheet("""
+                QTableView {
+                background-color: #0d3868;
+                /* background-color: #0f1720; */
+                /* gridline-color: #f7fbff; */ 
+                gridline-color: #0095ff13;
+                color: #eaf6ff; 
+                font-size: 20px
+                }
+        """)
         while onscreen("./captures/1080p2-1.png"):
             augments_ss = ImageGrab.grab(bbox = (440, 540, 666, 565))
             augments_ss.save("stage_two_first_augment.png")
@@ -46,21 +62,50 @@ def augments():
             stage_two_augment_three_img = cv2.imread("stage_two_third_augment.png")
             stage_two_augment_three_text = pytesseract.image_to_string(stage_two_augment_three_img)
 
-            stage_two_augment_one_text = re.sub(r'\b\w{1,2}\b', '', stage_two_augment_one_text)
-            stage_two_augment_two_text = re.sub(r'\b\w{1,2}\b', '', stage_two_augment_two_text)
-            stage_two_augment_three_text = re.sub(r'\b\w{1,2}\b', '', stage_two_augment_three_text)
+            stage_two_augment_one_text = str.rstrip(stage_two_augment_one_text)
+            stage_two_augment_two_text = str.rstrip(stage_two_augment_two_text)
+            stage_two_augment_three_text = str.rstrip(stage_two_augment_three_text)
+
+            print("---" + stage_two_augment_one_text + "---")
+            print("---" + stage_two_augment_two_text + "---")
+            print("---" + stage_two_augment_three_text + "---")
+
+            # Create the statsWindow only the FIRST TIME we see 3 augments
+            if stage_two_augment_one_val == "" and stage_two_augment_two_val == "" and stage_two_augment_three_val == "":
+                print("Creates the table the first time")
+                data = [
+                        [stage_two_augment_one_text, getAugmentPlacement(stage_two_augment_one_text, 2)],
+                        [stage_two_augment_two_text, getAugmentPlacement(stage_two_augment_two_text, 2)],
+                        [stage_two_augment_three_text, getAugmentPlacement(stage_two_augment_three_text, 2)],
+                ]
+
+                window = CreateTable(data, 2, screen_size[0], screen_size[1])
+
+                window.show()
 
             if stage_two_augment_one_text != stage_two_augment_one_val or stage_two_augment_two_text != stage_two_augment_two_val or stage_two_augment_three_text != stage_two_augment_three_val:
                 print(stage_two_augment_one_text)
+                # If it's not the first 3 augments then update
+                # if(stage_two_augment_one_val != ""):
+                #     window.updateFirstAugmentStats(stage_two_augment_one_text, getAugmentPlacement(stage_two_augment_one_text, 2))
                 stage_two_augment_one_val = stage_two_augment_one_text
+
                 print(stage_two_augment_two_text)
+                # If it's not the first 3 augments then update
+                # if(stage_two_augment_two_val != ""):
+                #     window.updateSecondAugmentStats(stage_two_augment_two_text, getAugmentPlacement(stage_two_augment_two_text, 2))
                 stage_two_augment_two_val = stage_two_augment_two_text
+
                 print(stage_two_augment_three_text)
+                # If it's not the first 3 augments then update
+                # if(stage_two_augment_three_val != ""):
+                #     window.updateThirdAugmentStats(stage_two_augment_three_text, getAugmentPlacement(stage_two_augment_three_text, 2))
                 stage_two_augment_three_val = stage_two_augment_three_text
 
             time.sleep(0.5)
             
         print("waiting for 3-2")
+        # QtCore.QMetaObject.invokeMethod(window, "close", QtCore.Qt.ConnectionType.QueuedConnection)
         while not onscreen("./captures/1080p3-2.png"):
             time.sleep(2)    
 
@@ -92,6 +137,11 @@ def augments():
             stage_three_augment_one_text = re.sub(r'\b\w{1,2}\b', '', stage_three_augment_one_text)
             stage_three_augment_two_text = re.sub(r'\b\w{1,2}\b', '', stage_three_augment_two_text)
             stage_three_augment_three_text = re.sub(r'\b\w{1,2}\b', '', stage_three_augment_three_text)
+
+            print("Stage 3 first augment: " + stage_two_augment_one_text)
+            print("Stage 3 second augment: " + stage_two_augment_two_text)
+            print("Stage 3 third augment: " + stage_two_augment_three_text)
+
 
             if stage_three_augment_one_text != stage_three_augment_one_val or stage_three_augment_two_text != stage_three_augment_two_val or stage_three_augment_three_text != stage_three_augment_three_val:
                 print(stage_three_augment_one_text)
@@ -280,8 +330,8 @@ def augments():
 
 
 
-
-augments()
+# Makes sure bad exit conditions are cleared
+sys.exit(augments())
 
 #4kaugment pixels
 #augments_ss = ImageGrab.grab(bbox = (903, 1080, 1403, 1130))

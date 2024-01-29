@@ -145,10 +145,18 @@ def fetchStats():
     SCROLL_PAUSE_TIME = 0.5
 
     # Bottom of document
-    bottom = driver.execute_script("return document.body.scrollHeight")
+    # bottom = driver.execute_script("return document.body.scrollHeight")
+    # Bottom of document varies so put it at 10000 for patch 14.2 of TFT
+    # SUBJECT TO CHANGE
+    bottom = 10000
 
     # Rough estimate of next height increment (this is SUBJECT TO CHANGE if tactics.tools ever changes it's table height)
-    height_increment = 1150
+    height_increment = 1170
+
+    #Augment repeat number represents the index at which we want the stats of the non-repeated last augments of the table
+    #For reference number meanings: 42 = starts from last 3 augments 45 = last 2 augments 48 = last augment (patch 14.2)
+    # SUBJECT TO CHANGE (depends height increment and how many augments this patch/set)
+    augmentRepeatNumber = 48
 
     # Update the current height so the first time in the loop it scrolls down the page to new height (we want to get new augment stats)
     # Which is the 13th augment on the table list (height is just rought estimate based on DOM rendering)
@@ -172,16 +180,16 @@ def fetchStats():
         for stats in newStats:
             # This is since the height increment scroll doesn't generate the last 2 augments in the table on the DOM
             # so we need to shorten the list to ignore repeated elements (it will repeat elements and we only want the last 6 values in the list)
-            if current_height == 9200:
-                if lastAugmentCounter >= 42:
+            if current_height == (height_increment * 8):
+                if lastAugmentCounter >= augmentRepeatNumber:
                     if statCounter == 0:
                         first = stats.text
                     if statCounter == 1:
                         second = stats.text
                     if statCounter == 2:
                         third = stats.text
-                        # print(third)
-                        # print(indexofStat, augNames[indexofStat], first, second, third)
+                        print(third)
+                        print(indexofStat, augNames[indexofStat], first, second, third)
                         insertVaribleIntoTable(augNames[indexofStat], first, second, third)
                         indexofStat += 1
                         statCounter = -1
@@ -194,8 +202,8 @@ def fetchStats():
                     second = stats.text
                 if statCounter == 2:
                     third = stats.text
-                    # print(third)
-                    # print(indexofStat, augNames[indexofStat], first, second, third)
+                    print(third)
+                    print(indexofStat, augNames[indexofStat], first, second, third)
                     insertVaribleIntoTable(augNames[indexofStat], first, second, third)
                     indexofStat += 1
                     statCounter = -1
@@ -204,7 +212,8 @@ def fetchStats():
         # Calculate new scroll height
         current_height += height_increment
         # print("Height increment: %d", height_increment)
-        # print("Current height: %d", current_height)
+        print("Current height: %d", current_height)
+        print(bottom)
 
         if current_height > bottom:
             current_height = bottom
@@ -247,4 +256,8 @@ def getAugmentPlacement(augmentName, stage):
         if sqliteConnection:
             sqliteConnection.close()
             # print("The SQLite connection is closed")
-    return result[0][0]
+    try:
+        print(result[0][0])
+        return result[0][0]
+    except Exception as error:
+        return "Could not find augment Stats"
