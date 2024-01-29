@@ -98,6 +98,7 @@ def augments():
             window = CreateMainWindow(data, 2, screen_size[0], screen_size[1])
           else:
             getInfoFromQueue(data, window)
+            print("reaches inside else of 2-1 while loop")
             
         # Prints waiting and closes the window since 2-1 augment selection phase is over
         print("waiting for 3-2")
