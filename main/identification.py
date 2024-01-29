@@ -199,14 +199,15 @@ def augments():
     elif screen_size[0] == 3840 and screen_size[1] == 2160:
         print("4k screen resloution")
 
+        print("waiting for stage 2-1")
         while not onscreen("./captures/2-1.png"):
-            print("sleeping")
+            #print("sleeping")
             time.sleep(2)
 
         stage_two_augment_one_val = ""
         stage_two_augment_two_val = ""
         stage_two_augment_three_val = ""
-        if onscreen("./captures/2-1.png"):
+        while onscreen("./captures/2-1.png"):
             augments_ss = ImageGrab.grab(bbox = (903, 1080, 1403, 1130))
             augments_ss.save("stage_two_first_augment.png")
             augments_ss.close()
@@ -242,14 +243,14 @@ def augments():
 
             time.sleep(0.5)
             
-
+        print("waiting for stage 3-2")
         while not onscreen("./captures/3-2.png"):
             time.sleep(2)    
 
         stage_three_augment_one_val = ""
         stage_three_augment_two_val = ""
         stage_three_augment_three_val = ""
-        if onscreen("./captures/3-2.png"):
+        while onscreen("./captures/3-2.png"):
             augments_ss = ImageGrab.grab(bbox = (903, 1080, 1403, 1130))
             augments_ss.save("stage_three_first_augment.png")
             augments_ss.close()
@@ -285,14 +286,14 @@ def augments():
 
             time.sleep(0.5)
 
-
+        print("waiting for stage 4-2")
         while not onscreen("./captures/4-2.png"):
             time.sleep(2)    
 
         stage_four_augment_one_val = ""
         stage_four_augment_two_val = ""
         stage_four_augment_three_val = ""
-        if onscreen("./captures/4-2.png"):
+        while onscreen("./captures/4-2.png"):
             augments_ss = ImageGrab.grab(bbox = (903, 1080, 1403, 1130))
             augments_ss.save("stage_four_first_augment.png")
             augments_ss.close()
