@@ -78,6 +78,16 @@ def insertVaribleIntoTable(augmentName, first, second, third):
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
+# Taken from https://stackoverflow.com/questions/37181403/how-to-set-browser-viewport-size for changing viewport of website in JS using selenium
+
+def set_viewport_size(driver, width, height):
+    window_size = driver.execute_script("""
+        return [window.outerWidth - window.innerWidth + arguments[0],
+          window.outerHeight - window.innerHeight + arguments[1]];
+        """, width, height)
+    driver.set_window_size(*window_size)
+
+
 # From https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
 # and https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed
 
@@ -91,6 +101,14 @@ def fetchStats():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://tactics.tools/augments")
 
+    # Gets the bottom of the DOM body (bottom of page) for tactics.tools/augments and sets the viewport to that Y-size  
+    # This allows us to get all augments + their respective placement stats at the same time without having to deal with scrolling
+    bottom_of_page = driver.execute_script("return document.body.scrollHeight")
+    # The x-value of 1700 is somewhat overkill to ensure we capture everything 
+    set_viewport_size(driver, 1700, bottom_of_page)
+
+    # print (driver.execute_script("return [window.innerWidth, window.innerHeight];"))
+
     # Have to wait for the page to load (otherwise sometimes the JS doesn't generate the DOM elements we're searching for)
 
     time.sleep(0.5)
@@ -103,18 +121,19 @@ def fetchStats():
     # Dictionary used to store {index, augmentNames} so we can later link up the stats with the augment names
 
     augNames = {}
+    augHTMLElements = {}
     augNamesIndex = 0
+
+    # Gets ALL the augment names from the table (they are not dynamically loaded with JS) and puts them into the dictionary augNames
 
     for names in augHTML:
     # Gets rid of the first result which is not an augment name (AugmentsGamesPlaceTop 4WinAt ...).
         if(len(names.text) < 30):
             augNames[augNamesIndex] = names.text
+            augHTMLElements[augNamesIndex] = names;
             augNamesIndex+=1
 
     # print(augNames)
-
-    # text="."
-    # blank="—"
 
     indexofStat = 0
     statCounter = 0;
@@ -125,98 +144,26 @@ def fetchStats():
 
     createTableDatabase()
 
-    # Get stats for specific placements at Stage 2-1, 3-2, 4-2, instead of general stats for augments
-    statsHTML = driver.find_elements(By.XPATH, value="//div[@id='tbl-body']//*[contains(@class, 'flex') and contains(@class, 'items-center') and contains(@class, 'justify-end') and contains(@class, 'px-[14px]') and contains(@class, 'css-1puwvti') and contains(@class, 'tbl-cell-right-border')]")
-    # print(statsHTML)
-    for stats in statsHTML:
+    # Finds stats of the the augments at 2-1, 3-2, 4-2 of all augments and returns a collection of selenium webdriver elements stored in newStats
+
+    newStats = driver.find_elements(By.XPATH, value="//div[@id='tbl-body']//*[contains(@class, 'flex') and contains(@class, 'items-center') and contains(@class, 'justify-end') and contains(@class, 'px-[14px]') and contains(@class, 'css-1puwvti') and contains(@class, 'tbl-cell-right-border')]")
+
+    # Goes through selenium webdriver elements and assigns data to placements and groups them in a tuple which we pass to the Sqlite3 database (augmentName, 2-1 avg placement, 3-2, avg placement, 4-2 avg placement)
+
+    for stats in newStats:
         if statCounter == 0:
             first = stats.text
         if statCounter == 1:
             second = stats.text
         if statCounter == 2:
             third = stats.text
-            # print(indexofStat, augNames[indexofStat], first, second, third)
+            # print(third)
+            # print(augNames[indexofStat])
+            print(indexofStat, augNames[indexofStat], first, second, third)
             insertVaribleIntoTable(augNames[indexofStat], first, second, third)
             indexofStat += 1
             statCounter = -1
         statCounter += 1
-
-    # Sourced from https://stackoverflow.com/questions/20986631/how-can-i-scroll-a-web-page-using-selenium-webdriver-in-python
-    SCROLL_PAUSE_TIME = 0.5
-
-    # Bottom of document
-    # bottom = driver.execute_script("return document.body.scrollHeight")
-    # Bottom of document varies so put it at 10000 for patch 14.2 of TFT
-    # SUBJECT TO CHANGE
-    bottom = 10000
-
-    # Rough estimate of next height increment (this is SUBJECT TO CHANGE if tactics.tools ever changes it's table height)
-    height_increment = 1170
-
-    #Augment repeat number represents the index at which we want the stats of the non-repeated last augments of the table
-    #For reference number meanings: 42 = starts from last 3 augments 45 = last 2 augments 48 = last augment (patch 14.2)
-    # SUBJECT TO CHANGE (depends height increment and how many augments this patch/set)
-    augmentRepeatNumber = 48
-
-    # Update the current height so the first time in the loop it scrolls down the page to new height (we want to get new augment stats)
-    # Which is the 13th augment on the table list (height is just rought estimate based on DOM rendering)
-    current_height = height_increment
-
-    # Counter to track when we are reaching the non-repeated last augments
-    lastAugmentCounter = 0
-
-    while True:
-        if current_height == bottom:
-            break
-        # Scroll down to current_height which was just updated
-        driver.execute_script("window.scrollTo(0, arguments[0]);", current_height)
-
-        # Wait to load page
-        time.sleep(SCROLL_PAUSE_TIME)
-
-        # Get the avg placements of the newly displayed augments in a list of WebElements: newStats
-        newStats = driver.find_elements(By.XPATH, value="//div[@id='tbl-body']//*[contains(@class, 'flex') and contains(@class, 'items-center') and contains(@class, 'justify-end') and contains(@class, 'px-[14px]') and contains(@class, 'css-1puwvti') and contains(@class, 'tbl-cell-right-border')]")
-
-        for stats in newStats:
-            # This is since the height increment scroll doesn't generate the last 2 augments in the table on the DOM
-            # so we need to shorten the list to ignore repeated elements (it will repeat elements and we only want the last 6 values in the list)
-            if current_height == (height_increment * 8):
-                if lastAugmentCounter >= augmentRepeatNumber:
-                    if statCounter == 0:
-                        first = stats.text
-                    if statCounter == 1:
-                        second = stats.text
-                    if statCounter == 2:
-                        third = stats.text
-                        print(third)
-                        print(indexofStat, augNames[indexofStat], first, second, third)
-                        insertVaribleIntoTable(augNames[indexofStat], first, second, third)
-                        indexofStat += 1
-                        statCounter = -1
-                    statCounter += 1
-                lastAugmentCounter+= 1
-            else: 
-                if statCounter == 0:
-                    first = stats.text
-                if statCounter == 1:
-                    second = stats.text
-                if statCounter == 2:
-                    third = stats.text
-                    print(third)
-                    print(indexofStat, augNames[indexofStat], first, second, third)
-                    insertVaribleIntoTable(augNames[indexofStat], first, second, third)
-                    indexofStat += 1
-                    statCounter = -1
-                statCounter += 1
-
-        # Calculate new scroll height
-        current_height += height_increment
-        # print("Height increment: %d", height_increment)
-        print("Current height: %d", current_height)
-        print(bottom)
-
-        if current_height > bottom:
-            current_height = bottom
         
     driver.close()
 
