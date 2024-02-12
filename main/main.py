@@ -246,13 +246,14 @@ def augments():
         # stage_two_augment_one_val = ""
         # stage_two_augment_two_val = ""
         # stage_two_augment_three_val = ""
-        while onscreen("./captures/1080p2-1.png"):
-            data = putInfoinQueue(2)
-            if window is None:
-                window = CreateMainWindow(data, 2, screen_size[0], screen_size[1])
-            else:
-                getInfoFromQueue(data, window)
-                print("reaches inside else of 2-1 while loop")
+        if onscreen("./captures/1080p2-1.png"):
+            while onscreen("./captures/tft_overlay_highlighted_reroll.png") or onscreen("./captures/tft_overlay_used_reroll.png"):
+                data = putInfoinQueue(2)
+                if window is None:
+                    window = CreateMainWindow(data, 2, screen_size[0], screen_size[1])
+                else:
+                    getInfoFromQueue(data, window)
+                    print("reaches inside else of 2-1 while loop")
             
         # Prints waiting and closes the window since 2-1 augment selection phase is over
         print("waiting for 3-2")
@@ -265,10 +266,11 @@ def augments():
         # stage_three_augment_two_val = ""
         # stage_three_augment_three_val = ""
         window.updateTable("show", 3)
-        while onscreen("./captures/1080p3-2.png"):
-            data = putInfoinQueue(3)
-            getInfoFromQueue(data, window)
-            print("reaches inside else of 3-2 while loop")
+        if onscreen("./captures/1080p3-2.png"):
+            while onscreen("./captures/tft_overlay_highlighted_reroll.png") or onscreen("./captures/tft_overlay_used_reroll.png"):
+                data = putInfoinQueue(3)
+                getInfoFromQueue(data, window)
+                print("reaches inside else of 3-2 while loop")
                 
             # Prints waiting and closes the window since 2-1 augment selection phase is over
         print("waiting for 4-2")
@@ -281,10 +283,11 @@ def augments():
         # stage_four_augment_two_val = ""
         # stage_four_augment_three_val = ""
         window.updateTable("show", 4)
-        while onscreen("./captures/1080p4-2.png"):
-            data = putInfoinQueue(4)
-            getInfoFromQueue(data, window)
-            print("reaches inside else of 4-2 while loop")
+        if onscreen("./captures/1080p4-2.png"):
+            while onscreen("./captures/tft_overlay_highlighted_reroll.png") or onscreen("./captures/tft_overlay_used_reroll.png"):
+                data = putInfoinQueue(4)
+                getInfoFromQueue(data, window)
+                print("reaches inside else of 4-2 while loop")
                 
             # Prints waiting and closes the window since 2-1 augment selection phase is over
         print("finished last augment")
