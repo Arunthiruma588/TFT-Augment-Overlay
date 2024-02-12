@@ -4,6 +4,8 @@ from fetchStats import *
 from statsWindowQt5 import *
 from PyQt6.QtGui import QScreen
 
+# from autocorrect import Speller
+
 from python_imagesearch.imagesearch import imagesearch as search
 from PIL import ImageGrab
 from PIL import Image
@@ -32,9 +34,37 @@ import pyautogui
 #   window = CreateMainWindow(data)
 #   app.exec()
 
-def testing():
-  fetchStats()
+def stringProcessing(string):
+    # First need to strip string of \n and whitespace we get from pytesseract
+    finalString = str.rstrip(string)
+    # Second we need to get rid of extra / misread space 
+    # ' case - because of sparkle effects on augment image 
+    # ‘ case - special character for same sparkle effects reason
+    # Il case - sometimes misreading II
+    finalString = re.sub(r"^'", "", re.sub(r"^‘", "", re.sub(r"Il$", "II", finalString)))
+    # Lastly some edge cases don't include whitespace and I's are turned into ! (i.e. Pumping Up! instead of Pumping Up I) 
+    #so we need to fix those cases here
+    if finalString == "Ona Roll":
+        finalString = "On a Roll"
+    elif "!" in finalString:
+        if finalString != "One, Two, Five!":
+            finalString = re.sub(r"!$", " I", finalString)
+    return finalString
 
+def testing():
+  # fetchStats()
+  
+  # test_string = "'What The Forge\n"
+  # print(test_string)
+  # test_string = re.sub(r"^'", "", str.rstrip(test_string))
+  # print(test_string)
+  # test_string_2 = "That's Jazz"
+  # test_string_2 = re.sub(r"^'", "", str.rstrip(test_string_2))
+  # print(test_string_2)
+
+  test_string_3 = "‘What The ForgeI\n"
+  test_string_3 = stringProcessing(test_string_3)
+  print(test_string_3)
   # image = cv2.imread('stage_two_first_augment.png')
   # # blur = cv2.GaussianBlur(gray, (3,3), 0)
   # # thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]

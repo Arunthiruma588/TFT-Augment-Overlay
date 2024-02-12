@@ -111,7 +111,7 @@ def fetchStats():
 
     # Have to wait for the page to load (otherwise sometimes the JS doesn't generate the DOM elements we're searching for)
 
-    time.sleep(0.5)
+    time.sleep(1)
 
     # Gets the HTML for the augment names from tactics.tools by XPATH
     # Helpful source for XPATH: https://www.youtube.com/watch?v=yZY6-XSTveA&ab_channel=AutomatewithJonathan
