@@ -183,3 +183,22 @@ class CreateMainWindow(QMainWindow):
       self.repaint()
       self.update()
         # print("enters into updateTable")
+
+def getInfoFromQueue(data, window):
+  # Get the table values and checks if it has changed (compared to what's in variable: data)
+  # If it has, then update the table, otherwise do nothing
+  if window.table.item(0,0).text() != data[0][0]:
+    print("Window stats first aug b4 update:" + window.table.item(0,0).text())
+    print("Data stats first aug b4 update:" + data[0][0])
+    window.updateFirstAugmentStats(data[0][0], data[0][1])
+    print("After firstaugment update:" + window.table.item(0,0).text())
+  if window.table.item(1,0).text() != data[1][0]:
+    print("Window stats second aug b4 update:" + window.table.item(1,0).text())
+    print("Data stats second aug b4 update:" + data[1][0])
+    window.updateSecondAugmentStats(data[1][0], data[1][1])
+    print("After secondaugment update:" + window.table.item(1,0).text())
+  if window.table.item(2,0).text() != data[2][0]:
+    print("Window stats third aug b4 update:" + window.table.item(2,0).text())
+    print("Data stats third aug b4 update:" + data[2][0])
+    window.updateThirdAugmentStats(data[2][0], data[2][1])
+    print("After thirdaugment update:" + window.table.item(2,0).text())

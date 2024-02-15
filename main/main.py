@@ -1,6 +1,6 @@
-from python_imagesearch.imagesearch import imagesearch as search
+# from python_imagesearch.imagesearch import imagesearch as search
 from PIL import ImageGrab
-from PIL import Image
+# from PIL import Image
 import pytesseract
 pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 import cv2
@@ -8,223 +8,224 @@ import time
 import re
 import pyautogui
 
-import sys
+# import sys
 from fetchStats import *
 from statsWindowQt5 import *
+from identification import *
 # from PyQt6.QtGui import QScreen
 
 
-def onscreen(path, precision=0.8):
-    return search(path, precision)[0] != -1
+# def onscreen(path, precision=0.8):
+#     return search(path, precision)[0] != -1
+# 
+# def stringProcessing(string):
+#     # First need to strip string of \n and whitespace we get from pytesseract
+#     finalString = str.rstrip(string)
+#     # Second we need to get rid of extra / misread space 
+#     # ' case - because of sparkle effects on augment image 
+#     # ‘ case - special character for same sparkle effects reason
+#     # Il case - sometimes misreading II
+#     finalString = re.sub(r"^'", "", re.sub(r"^‘", "", re.sub(r"Il$", "II", finalString)))
+#     # Lastly some edge cases don't include whitespace and I's are turned into ! (i.e. Pumping Up! instead of Pumping Up I) 
+#     #so we need to fix those cases here
+#     if "!" in finalString:
+#         if finalString != "One, Two, Five!":
+#             finalString = re.sub(r"\s?!$", " I", finalString)
+#     if (" I" or " II" or " III") not in finalString:
+#         finalString = re.sub(r"I$", " I", finalString)
+#     if "|" in finalString:
+#         finalString = re.sub(r"\s?\|$", " I", finalString)
+#     if finalString == "Ona Roll":
+#         finalString = "On a Roll"
+#     elif "Wild and" in finalString:
+#         finalString = "Young and Wild and Free"
 
-def stringProcessing(string):
-    # First need to strip string of \n and whitespace we get from pytesseract
-    finalString = str.rstrip(string)
-    # Second we need to get rid of extra / misread space 
-    # ' case - because of sparkle effects on augment image 
-    # ‘ case - special character for same sparkle effects reason
-    # Il case - sometimes misreading II
-    finalString = re.sub(r"^'", "", re.sub(r"^‘", "", re.sub(r"Il$", "II", finalString)))
-    # Lastly some edge cases don't include whitespace and I's are turned into ! (i.e. Pumping Up! instead of Pumping Up I) 
-    #so we need to fix those cases here
-    if "!" in finalString:
-        if finalString != "One, Two, Five!":
-            finalString = re.sub(r"\s?!$", " I", finalString)
-    if (" I" or " II" or " III") not in finalString:
-        finalString = re.sub(r"I$", " I", finalString)
-    if "|" in finalString:
-        finalString = re.sub(r"\s?\|$", " I", finalString)
-    if finalString == "Ona Roll":
-        finalString = "On a Roll"
-    elif "Wild and" in finalString:
-        finalString = "Young and Wild and Free"
+#     return finalString
 
-    return finalString
+# def putInfoinQueue(stageNumber):
+#     # This method returns data, a table which lists (first augment name, first augment placement), (second augment name, second augment placement), (third augment name, third augment placement)
 
-def putInfoinQueue(stageNumber):
-    # This method returns data, a table which lists (first augment name, first augment placement), (second augment name, second augment placement), (third augment name, third augment placement)
+#     # It does this by determining the stageNumber 
+#     # and then taking screenshots of each of the augment text locations (this method is for 1920 x 1080 resolution)
+#     # and parsing those text images to text using pytesseract
+#     # doing string processing to get exact matches of text in the SQLite3 database
+#     # and searching for the average placement in the database using the augmentName and stageNumber info
+#     # and returning all this info in data
+#     data = None
+#     if stageNumber == 2:
+#         # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
 
-    # It does this by determining the stageNumber 
-    # and then taking screenshots of each of the augment text locations (this method is for 1920 x 1080 resolution)
-    # and parsing those text images to text using pytesseract
-    # doing string processing to get exact matches of text in the SQLite3 database
-    # and searching for the average placement in the database using the augmentName and stageNumber info
-    # and returning all this info in data
-    data = None
-    if stageNumber == 2:
-        # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
+#         augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
+#         augments_ss.save("stage_two_first_augment.png")
+#         augments_ss.close()
+#         stage_two_augment_one_img = cv2.imread("stage_two_first_augment.png")
+#         stage_two_augment_one_text = pytesseract.image_to_string(stage_two_augment_one_img)
 
-        augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
-        augments_ss.save("stage_two_first_augment.png")
-        augments_ss.close()
-        stage_two_augment_one_img = cv2.imread("stage_two_first_augment.png")
-        stage_two_augment_one_text = pytesseract.image_to_string(stage_two_augment_one_img)
+#         # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
 
-        # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
+#         augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
+#         augments_ss.save("stage_two_second_augment.png")
+#         augments_ss.close()
+#         stage_two_augment_two_img = cv2.imread("stage_two_second_augment.png")
+#         stage_two_augment_two_text = pytesseract.image_to_string(stage_two_augment_two_img)
 
-        augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
-        augments_ss.save("stage_two_second_augment.png")
-        augments_ss.close()
-        stage_two_augment_two_img = cv2.imread("stage_two_second_augment.png")
-        stage_two_augment_two_text = pytesseract.image_to_string(stage_two_augment_two_img)
+#         # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
 
-        # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
+#         augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
+#         augments_ss.save("stage_two_third_augment.png")
+#         augments_ss.close()
+#         stage_two_augment_three_img = cv2.imread("stage_two_third_augment.png")
+#         stage_two_augment_three_text = pytesseract.image_to_string(stage_two_augment_three_img)
 
-        augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
-        augments_ss.save("stage_two_third_augment.png")
-        augments_ss.close()
-        stage_two_augment_three_img = cv2.imread("stage_two_third_augment.png")
-        stage_two_augment_three_text = pytesseract.image_to_string(stage_two_augment_three_img)
-
-        #Testing 
-        print("Before string processing:")
-        print("---" + stage_two_augment_one_text + "---")
-        print("---" + stage_two_augment_two_text + "---")
-        print("---" + stage_two_augment_three_text + "---")
+#         #Testing 
+#         print("Before string processing:")
+#         print("---" + stage_two_augment_one_text + "---")
+#         print("---" + stage_two_augment_two_text + "---")
+#         print("---" + stage_two_augment_three_text + "---")
 
 
-        # String processing
+#         # String processing
 
-        stage_two_augment_one_text = stringProcessing(stage_two_augment_one_text)
-        stage_two_augment_two_text = stringProcessing(stage_two_augment_two_text)
-        stage_two_augment_three_text = stringProcessing(stage_two_augment_three_text)
+#         stage_two_augment_one_text = stringProcessing(stage_two_augment_one_text)
+#         stage_two_augment_two_text = stringProcessing(stage_two_augment_two_text)
+#         stage_two_augment_three_text = stringProcessing(stage_two_augment_three_text)
 
-        print("After string processing:")
-        print("---" + stage_two_augment_one_text + "---")
-        print("---" + stage_two_augment_two_text + "---")
-        print("---" + stage_two_augment_three_text + "---")
+#         print("After string processing:")
+#         print("---" + stage_two_augment_one_text + "---")
+#         print("---" + stage_two_augment_two_text + "---")
+#         print("---" + stage_two_augment_three_text + "---")
 
-        # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
+#         # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
 
-        data = [
-            [stage_two_augment_one_text, getAugmentPlacement(stage_two_augment_one_text, stageNumber)],
-            [stage_two_augment_two_text, getAugmentPlacement(stage_two_augment_two_text, stageNumber)],
-            [stage_two_augment_three_text, getAugmentPlacement(stage_two_augment_three_text, stageNumber)],
-        ]
-    elif stageNumber == 3:
-        # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
+#         data = [
+#             [stage_two_augment_one_text, getAugmentPlacement(stage_two_augment_one_text, stageNumber)],
+#             [stage_two_augment_two_text, getAugmentPlacement(stage_two_augment_two_text, stageNumber)],
+#             [stage_two_augment_three_text, getAugmentPlacement(stage_two_augment_three_text, stageNumber)],
+#         ]
+#     elif stageNumber == 3:
+#         # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
-        augments_ss.save("stage_three_first_augment.png")
-        augments_ss.close()
-        stage_three_augment_one_img = cv2.imread("stage_three_first_augment.png")
-        stage_three_augment_one_text = pytesseract.image_to_string(stage_three_augment_one_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_one_text))
+#         augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
+#         augments_ss.save("stage_three_first_augment.png")
+#         augments_ss.close()
+#         stage_three_augment_one_img = cv2.imread("stage_three_first_augment.png")
+#         stage_three_augment_one_text = pytesseract.image_to_string(stage_three_augment_one_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_one_text))
 
-        # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
+#         # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
-        augments_ss.save("stage_three_second_augment.png")
-        augments_ss.close()
-        stage_three_augment_two_img = cv2.imread("stage_three_second_augment.png")
-        stage_three_augment_two_text = pytesseract.image_to_string(stage_three_augment_two_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_two_text))
+#         augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
+#         augments_ss.save("stage_three_second_augment.png")
+#         augments_ss.close()
+#         stage_three_augment_two_img = cv2.imread("stage_three_second_augment.png")
+#         stage_three_augment_two_text = pytesseract.image_to_string(stage_three_augment_two_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_two_text))
 
-        # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
+#         # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
-        augments_ss.save("stage_three_third_augment.png")
-        augments_ss.close()
-        stage_three_augment_three_img = cv2.imread("stage_three_third_augment.png")
-        stage_three_augment_three_text = pytesseract.image_to_string(stage_three_augment_three_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_three_text))
+#         augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
+#         augments_ss.save("stage_three_third_augment.png")
+#         augments_ss.close()
+#         stage_three_augment_three_img = cv2.imread("stage_three_third_augment.png")
+#         stage_three_augment_three_text = pytesseract.image_to_string(stage_three_augment_three_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_three_augment_three_text))
 
-        #Testing 
-        print("Before string processing:")
-        print("---" + stage_three_augment_one_text + "---")
-        print("---" + stage_three_augment_two_text + "---")
-        print("---" + stage_three_augment_three_text + "---")
+#         #Testing 
+#         print("Before string processing:")
+#         print("---" + stage_three_augment_one_text + "---")
+#         print("---" + stage_three_augment_two_text + "---")
+#         print("---" + stage_three_augment_three_text + "---")
 
-        #String processing
+#         #String processing
 
-        stage_three_augment_one_text = stringProcessing(stage_three_augment_one_text)
-        stage_three_augment_two_text = stringProcessing(stage_three_augment_two_text)
-        stage_three_augment_three_text = stringProcessing(stage_three_augment_three_text)
+#         stage_three_augment_one_text = stringProcessing(stage_three_augment_one_text)
+#         stage_three_augment_two_text = stringProcessing(stage_three_augment_two_text)
+#         stage_three_augment_three_text = stringProcessing(stage_three_augment_three_text)
 
-        print("After string processing:")
-        print("---" + stage_three_augment_one_text + "---")
-        print("---" + stage_three_augment_two_text + "---")
-        print("---" + stage_three_augment_three_text + "---")
+#         print("After string processing:")
+#         print("---" + stage_three_augment_one_text + "---")
+#         print("---" + stage_three_augment_two_text + "---")
+#         print("---" + stage_three_augment_three_text + "---")
 
-        # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
+#         # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
 
-        data = [
-            [stage_three_augment_one_text, getAugmentPlacement(stage_three_augment_one_text, stageNumber)],
-            [stage_three_augment_two_text, getAugmentPlacement(stage_three_augment_two_text, stageNumber)],
-            [stage_three_augment_three_text, getAugmentPlacement(stage_three_augment_three_text, stageNumber)],
-        ]
-    elif stageNumber == 4:
-        # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
+#         data = [
+#             [stage_three_augment_one_text, getAugmentPlacement(stage_three_augment_one_text, stageNumber)],
+#             [stage_three_augment_two_text, getAugmentPlacement(stage_three_augment_two_text, stageNumber)],
+#             [stage_three_augment_three_text, getAugmentPlacement(stage_three_augment_three_text, stageNumber)],
+#         ]
+#     elif stageNumber == 4:
+#         # Takes a screenshot of the location of the first augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
-        augments_ss.save("stage_four_first_augment.png")
-        augments_ss.close()
-        stage_four_augment_one_img = cv2.imread("stage_four_first_augment.png")
-        stage_four_augment_one_text = pytesseract.image_to_string(stage_four_augment_one_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_one_text))
+#         augments_ss = ImageGrab.grab(bbox = (435, 540, 671, 565))
+#         augments_ss.save("stage_four_first_augment.png")
+#         augments_ss.close()
+#         stage_four_augment_one_img = cv2.imread("stage_four_first_augment.png")
+#         stage_four_augment_one_text = pytesseract.image_to_string(stage_four_augment_one_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_one_text))
 
-        # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
+#         # Takes a screenshot of the location of the second augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
-        augments_ss.save("stage_four_second_augment.png")
-        augments_ss.close()
-        stage_four_augment_two_img = cv2.imread("stage_four_second_augment.png")
-        stage_four_augment_two_text = pytesseract.image_to_string(stage_four_augment_two_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_two_text))
+#         augments_ss = ImageGrab.grab(bbox = (840, 540, 1086, 565))
+#         augments_ss.save("stage_four_second_augment.png")
+#         augments_ss.close()
+#         stage_four_augment_two_img = cv2.imread("stage_four_second_augment.png")
+#         stage_four_augment_two_text = pytesseract.image_to_string(stage_four_augment_two_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_two_text))
 
-        # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
+#         # Takes a screenshot of the location of the third augment text and turns it into an img and then string using pytesseract
 
-        augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
-        augments_ss.save("stage_four_third_augment.png")
-        augments_ss.close()
-        stage_four_augment_three_img = cv2.imread("stage_four_third_augment.png")
-        stage_four_augment_three_text = pytesseract.image_to_string(stage_four_augment_three_img)
-        #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_three_text))
+#         augments_ss = ImageGrab.grab(bbox = (1254, 540, 1484, 565))
+#         augments_ss.save("stage_four_third_augment.png")
+#         augments_ss.close()
+#         stage_four_augment_three_img = cv2.imread("stage_four_third_augment.png")
+#         stage_four_augment_three_text = pytesseract.image_to_string(stage_four_augment_three_img)
+#         #print(re.sub(r'\b\w{1,2}\b', '', stage_four_augment_three_text))
 
-        # String processing
+#         # String processing
 
-        stage_four_augment_one_text = stringProcessing(stage_four_augment_one_text)
-        stage_four_augment_two_text = stringProcessing(stage_four_augment_two_text)
-        stage_four_augment_three_text = stringProcessing(stage_four_augment_three_text)
+#         stage_four_augment_one_text = stringProcessing(stage_four_augment_one_text)
+#         stage_four_augment_two_text = stringProcessing(stage_four_augment_two_text)
+#         stage_four_augment_three_text = stringProcessing(stage_four_augment_three_text)
 
-        # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
+#         # Group data into tuples (augmentName, augmentPlacement) listed in order of first,second,third augments and return result as a table: data
 
-        data = [
-            [stage_four_augment_one_text, getAugmentPlacement(stage_four_augment_one_text, stageNumber)],
-            [stage_four_augment_two_text, getAugmentPlacement(stage_four_augment_two_text, stageNumber)],
-            [stage_four_augment_three_text, getAugmentPlacement(stage_four_augment_three_text, stageNumber)],
-        ]
+#         data = [
+#             [stage_four_augment_one_text, getAugmentPlacement(stage_four_augment_one_text, stageNumber)],
+#             [stage_four_augment_two_text, getAugmentPlacement(stage_four_augment_two_text, stageNumber)],
+#             [stage_four_augment_three_text, getAugmentPlacement(stage_four_augment_three_text, stageNumber)],
+#         ]
 
-    return data
+#     return data
 
-def getInfoFromQueue(data, window):
-  # Get the table values and checks if it has changed (compared to what's in variable: data)
-  # If it has, then update the table, otherwise do nothing
-#   print("Enters getInfoFromQueue")
-#   print(window.table.item(0,0).text())
-#   print(data[0][0])
-#   print(window.table.item(1,0).text())
-#   print(data[1][0])
-#   print(window.table.item(2,0).text())
-#   print(data[2][0])
+# def getInfoFromQueue(data, window):
+#   # Get the table values and checks if it has changed (compared to what's in variable: data)
+#   # If it has, then update the table, otherwise do nothing
+# #   print("Enters getInfoFromQueue")
+# #   print(window.table.item(0,0).text())
+# #   print(data[0][0])
+# #   print(window.table.item(1,0).text())
+# #   print(data[1][0])
+# #   print(window.table.item(2,0).text())
+# #   print(data[2][0])
 
-  if window.table.item(0,0).text() != data[0][0]:
-    print("Window stats first aug b4 update:" + window.table.item(0,0).text())
-    print("Data stats first aug b4 update:" + data[0][0])
-    window.updateFirstAugmentStats(data[0][0], data[0][1])
-    print("After firstaugment update:" + window.table.item(0,0).text())
-  if window.table.item(1,0).text() != data[1][0]:
-    print("Window stats second aug b4 update:" + window.table.item(1,0).text())
-    print("Data stats second aug b4 update:" + data[1][0])
-    window.updateSecondAugmentStats(data[1][0], data[1][1])
-    print("After secondaugment update:" + window.table.item(1,0).text())
-  if window.table.item(2,0).text() != data[2][0]:
-    print("Window stats third aug b4 update:" + window.table.item(2,0).text())
-    print("Data stats third aug b4 update:" + data[2][0])
-    window.updateThirdAugmentStats(data[2][0], data[2][1])
-    print("After thirdaugment update:" + window.table.item(2,0).text())
+#   if window.table.item(0,0).text() != data[0][0]:
+#     print("Window stats first aug b4 update:" + window.table.item(0,0).text())
+#     print("Data stats first aug b4 update:" + data[0][0])
+#     window.updateFirstAugmentStats(data[0][0], data[0][1])
+#     print("After firstaugment update:" + window.table.item(0,0).text())
+#   if window.table.item(1,0).text() != data[1][0]:
+#     print("Window stats second aug b4 update:" + window.table.item(1,0).text())
+#     print("Data stats second aug b4 update:" + data[1][0])
+#     window.updateSecondAugmentStats(data[1][0], data[1][1])
+#     print("After secondaugment update:" + window.table.item(1,0).text())
+#   if window.table.item(2,0).text() != data[2][0]:
+#     print("Window stats third aug b4 update:" + window.table.item(2,0).text())
+#     print("Data stats third aug b4 update:" + data[2][0])
+#     window.updateThirdAugmentStats(data[2][0], data[2][1])
+#     print("After thirdaugment update:" + window.table.item(2,0).text())
 
-def augments():
+def main():
     # Gets the most up to date full list of augment Names and avg placement (above diamond) from tactics.tools and stores it in a local SQLite3 database
     fetchStats()
 
@@ -442,8 +443,9 @@ def augments():
 
 
 
-# Makes sure bad exit conditions are cleared
-sys.exit(augments())
+# Runs main and since sys.exit(main), also ignores unexpected exits (early player death before 4-2)
+if __name__ == "__main__":
+    main()
 
 #4kaugment pixels
 #augments_ss = ImageGrab.grab(bbox = (903, 1080, 1403, 1130))
