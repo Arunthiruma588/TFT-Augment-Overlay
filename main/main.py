@@ -27,11 +27,18 @@ def stringProcessing(string):
     finalString = re.sub(r"^'", "", re.sub(r"^‘", "", re.sub(r"Il$", "II", finalString)))
     # Lastly some edge cases don't include whitespace and I's are turned into ! (i.e. Pumping Up! instead of Pumping Up I) 
     #so we need to fix those cases here
+    if "!" in finalString:
+        if finalString != "One, Two, Five!":
+            finalString = re.sub(r"\s?!$", " I", finalString)
+    if (" I" or " II" or " III") not in finalString:
+        finalString = re.sub(r"I$", " I", finalString)
+    if "|" in finalString:
+        finalString = re.sub(r"\s?\|$", " I", finalString)
     if finalString == "Ona Roll":
         finalString = "On a Roll"
-    elif "!" in finalString:
-        if finalString != "One, Two, Five!":
-            finalString = re.sub(r"I$", " I", re.sub(r"!$", " I", finalString))
+    elif "Wild and" in finalString:
+        finalString = "Young and Wild and Free"
+
     return finalString
 
 def putInfoinQueue(stageNumber):
@@ -193,6 +200,14 @@ def putInfoinQueue(stageNumber):
 def getInfoFromQueue(data, window):
   # Get the table values and checks if it has changed (compared to what's in variable: data)
   # If it has, then update the table, otherwise do nothing
+#   print("Enters getInfoFromQueue")
+#   print(window.table.item(0,0).text())
+#   print(data[0][0])
+#   print(window.table.item(1,0).text())
+#   print(data[1][0])
+#   print(window.table.item(2,0).text())
+#   print(data[2][0])
+
   if window.table.item(0,0).text() != data[0][0]:
     print("Window stats first aug b4 update:" + window.table.item(0,0).text())
     print("Data stats first aug b4 update:" + data[0][0])
@@ -230,7 +245,8 @@ def augments():
             /* gridline-color: #f7fbff; */ 
             gridline-color: #0095ff13;
             color: #eaf6ff; 
-            font-size: 20px
+            /* font-size: 20px; */
+            font-size: 16px;
         }
     """)
     # For the first time window creation on 2-1, does a check to call CreateWindow which requires window=None (could be written another way)

@@ -44,11 +44,18 @@ def stringProcessing(string):
     finalString = re.sub(r"^'", "", re.sub(r"^‘", "", re.sub(r"Il$", "II", finalString)))
     # Lastly some edge cases don't include whitespace and I's are turned into ! (i.e. Pumping Up! instead of Pumping Up I) 
     #so we need to fix those cases here
+    if "!" in finalString:
+        if finalString != "One, Two, Five!":
+            finalString = re.sub(r"\s?!$", " I", finalString)
+    if (" I" or " II" or " III") not in finalString:
+        finalString = re.sub(r"I$", " I", finalString)
+    if "|" in finalString:
+        finalString = re.sub(r"\s?\|$", " I", finalString)
     if finalString == "Ona Roll":
         finalString = "On a Roll"
-    elif "!" in finalString:
-        if finalString != "One, Two, Five!":
-            finalString = re.sub(r"!$", " I", finalString)
+    elif "Wild and" in finalString:
+        finalString = "Young and Wild and Free"
+
     return finalString
 
 def testing():
@@ -62,9 +69,9 @@ def testing():
   # test_string_2 = re.sub(r"^'", "", str.rstrip(test_string_2))
   # print(test_string_2)
 
-  test_string_3 = "‘What The ForgeI\n"
-  test_string_3 = stringProcessing(test_string_3)
-  print(test_string_3)
+#   test_string_3 = "oung and Wild and Fre"
+#   test_string_3 = stringProcessing(test_string_3)
+#   print(test_string_3)
   # image = cv2.imread('stage_two_first_augment.png')
   # # blur = cv2.GaussianBlur(gray, (3,3), 0)
   # # thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
@@ -92,24 +99,25 @@ def testing():
 
 
   # print(getAugmentPlacement("Twin Terror l", 2))
-  # stage_two_augment_first_augment = "Lucky Streak"
-  # stage_two_augment_second_augment = "Heroic Grab Bag"
-  # stage_two_augment_third_augment = "Stationary Support"
+  stage_two_augment_first_augment = "Lucky Streak"
+  stage_two_augment_second_augment = "Heroic Grab Bag"
+  stage_two_augment_third_augment = "Stationary Support"
   # # Create application that runs the new window
-  # app = QApplication([])
+  app = QApplication([])
 
-  # # Stylesheet
-  # # Helpful reference: https://stackoverflow.com/questions/26162387/qtableview-qtablewidget-grid-stylesheet-grid-line-width
-  # app.setStyleSheet("""
-  #   QTableView {
-  #     background-color: #0d3868;
-  #     /* background-color: #0f1720; */
-  #     /* gridline-color: #f7fbff; */ 
-  #     gridline-color: #0095ff13;
-  #     color: #eaf6ff; 
-  #     font-size: 20px
-  #   }
-  # """)
+  # Stylesheet
+  # Helpful reference: https://stackoverflow.com/questions/26162387/qtableview-qtablewidget-grid-stylesheet-grid-line-width
+  app.setStyleSheet("""
+    QTableView {
+      background-color: #0d3868;
+      /* background-color: #0f1720; */
+      /* gridline-color: #f7fbff; */ 
+      gridline-color: #0095ff13;
+      color: #eaf6ff; 
+      /* font-size: 18px */
+      font-size: 16px
+    }
+  """)
   # loopCounter = 0
 
 
@@ -119,11 +127,11 @@ def testing():
   # #         ["", ""],
   # # ]
 
-  # data = [
-  #           [stage_two_augment_first_augment, getAugmentPlacement(stage_two_augment_first_augment, 2)],
-  #           [stage_two_augment_second_augment, getAugmentPlacement(stage_two_augment_second_augment, 2)],
-  #           [stage_two_augment_third_augment, getAugmentPlacement(stage_two_augment_third_augment, 2)],
-  # ]
+  data = [
+            [stage_two_augment_first_augment, getAugmentPlacement(stage_two_augment_first_augment, 2)],
+            [stage_two_augment_second_augment, getAugmentPlacement(stage_two_augment_second_augment, 2)],
+            [stage_two_augment_third_augment, getAugmentPlacement(stage_two_augment_third_augment, 2)],
+  ]
   # # runApp(data)
 
   # # window = None
@@ -144,7 +152,17 @@ def testing():
   #   # Data is data from above
   #   # 3 is the stageNumber (3-2)
   #   # 1920 x 1080 is the last 2 resolution numbers which determine the size of the augment screen (need to adjust for 4K display)
-  # window = CreateMainWindow(data, 2, 1920, 1080)
+  window = CreateMainWindow(data, 2, 1920, 1080)
+  print(window.table.item(0,0).text())
+  print(data[0][0])
+  print(window.table.item(0,0).text() != data[0][0])
+  data[0][0] = "You Have My Sword"
+  data[0][1] = getAugmentPlacement("You Have My Sword", 2)
+  print(data[0][0])
+  print(window.table.item(0,0).text() != data[0][0])
+  time.sleep(1)
+  window.updateFirstAugmentStats(data[0][0], data[0][1])
+  # window.updateFirstAugmentStats("Shock Treatment", getAugmentPlacement("Shock Treatment", 3))
   # # while True:
   # #     # parent = QMainWindow()
   # time.sleep(2)
@@ -163,7 +181,7 @@ def testing():
   #   }
   # """))
   # window.updateTable("show", 3)
-  # time.sleep(2)
+  time.sleep(3)
 
   # # window.show()
   # #     # table = CreateTable(window, data, 2, 1920, 1080)

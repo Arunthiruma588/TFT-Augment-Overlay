@@ -93,7 +93,6 @@ def set_viewport_size(driver, width, height):
 
 def fetchStats():
     options = webdriver.ChromeOptions()
-    # Runs Chrome browser as a background process (doesn't pop up since no GUI)
     options.add_argument("--headless=new")
     # Tactics.tools has a missing/expired/invalid SSL certificate, they really need to fix that
     options.add_argument('--ignore-certificate-errors-spki-list')
@@ -101,42 +100,30 @@ def fetchStats():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://tactics.tools/augments")
 
-    # Gets the bottom of the DOM body (bottom of page) for tactics.tools/augments and sets the viewport to that Y-size  
     # This allows us to get all augments + their respective placement stats at the same time without having to deal with scrolling
-    bottom_of_page = driver.execute_script("return document.body.scrollHeight")
-    # The x-value of 1700 is somewhat overkill to ensure we capture everything 
-    set_viewport_size(driver, 1700, bottom_of_page)
+    # 1700 is overkill
 
-    # print (driver.execute_script("return [window.innerWidth, window.innerHeight];"))
+    bottom_of_page = driver.execute_script("return document.body.scrollHeight")
+    set_viewport_size(driver, 1700, bottom_of_page) 
 
     # Have to wait for the page to load (otherwise sometimes the JS doesn't generate the DOM elements we're searching for)
-
-    time.sleep(1)
+    time.sleep(1) 
 
     # Gets the HTML for the augment names from tactics.tools by XPATH
     # Helpful source for XPATH: https://www.youtube.com/watch?v=yZY6-XSTveA&ab_channel=AutomatewithJonathan
 
     augHTML = driver.find_elements(By.XPATH, value="//*[contains(@class, 'pl-[6px]') and contains(@class, 'font-roboto') and contains(@class, 'font-normal') and contains(@class, 'truncate')]")
 
-    # Dictionary used to store {index, augmentNames} so we can later link up the stats with the augment names
-
     augNames = {}
     augHTMLElements = {}
     augNamesIndex = 0
 
-    # Gets ALL the augment names from the table (they are not dynamically loaded with JS) and puts them into the dictionary augNames
-
     for names in augHTML:
-    # Gets rid of the first result which is not an augment name (AugmentsGamesPlaceTop 4WinAt ...).
-        if(len(names.text) < 30):
+        # Gets rid of the first result which is not an augment name (AugmentsGamesPlaceTop 4WinAt ...).
+        if(len(names.text) < 30): 
             augNames[augNamesIndex] = names.text
             augHTMLElements[augNamesIndex] = names;
             augNamesIndex+=1
-
-    # print(augNames)
-
-    indexofStat = 0
-    statCounter = 0;
 
     # Refreshes the table database so stats are update
 
@@ -144,11 +131,15 @@ def fetchStats():
 
     createTableDatabase()
 
-    # Finds stats of the the augments at 2-1, 3-2, 4-2 of all augments and returns a collection of selenium webdriver elements stored in newStats
+    # Finds stats of the augment placements at 2-1, 3-2, 4-2 of all augments 
 
     newStats = driver.find_elements(By.XPATH, value="//div[@id='tbl-body']//*[contains(@class, 'flex') and contains(@class, 'items-center') and contains(@class, 'justify-end') and contains(@class, 'px-[14px]') and contains(@class, 'css-1puwvti') and contains(@class, 'tbl-cell-right-border')]")
 
-    # Goes through selenium webdriver elements and assigns data to placements and groups them in a tuple which we pass to the Sqlite3 database (augmentName, 2-1 avg placement, 3-2, avg placement, 4-2 avg placement)
+    # Goes through selenium webdriver elements and assigns data to placements and groups them in a tuple which we pass to the Sqlite3 database 
+    # (augmentName, 2-1 avg placement, 3-2, avg placement, 4-2 avg placement)
+
+    indexofStat = 0
+    statCounter = 0;
 
     for stats in newStats:
         if statCounter == 0:
