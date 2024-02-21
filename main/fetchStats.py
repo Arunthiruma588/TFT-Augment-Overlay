@@ -2,7 +2,6 @@ import sqlite3
 import time
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service 
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
@@ -148,8 +147,6 @@ def fetchStats():
             second = stats.text
         if statCounter == 2:
             third = stats.text
-            # print(third)
-            # print(augNames[indexofStat])
             print(indexofStat, augNames[indexofStat], first, second, third)
             insertVaribleIntoTable(augNames[indexofStat], first, second, third)
             indexofStat += 1
@@ -169,7 +166,6 @@ def getAugmentPlacement(augmentName, stage):
     try:
         sqliteConnection = sqlite3.connect('Augment_Stats.db')
         cursor = sqliteConnection.cursor()
-        # print("Connected to SQLite")
 
         sqlite_getAugment = ""
 
@@ -184,7 +180,6 @@ def getAugmentPlacement(augmentName, stage):
         cursor.execute(sqlite_getAugment, data_tuple)
         result = cursor.fetchall()
         sqliteConnection.commit()
-        # print("Python Variables retrived from AugmentTable")
 
         cursor.close()
 
@@ -193,7 +188,6 @@ def getAugmentPlacement(augmentName, stage):
     finally:
         if sqliteConnection:
             sqliteConnection.close()
-            # print("The SQLite connection is closed")
     try:
         print(result[0][0])
         return result[0][0]

@@ -160,8 +160,9 @@ def testing():
   data[0][1] = getAugmentPlacement("You Have My Sword", 2)
   print(data[0][0])
   print(window.table.item(0,0).text() != data[0][0])
-  time.sleep(1)
-  window.updateFirstAugmentStats(data[0][0], data[0][1])
+  time.sleep(6)
+  window.updateSecondAugmentStats(data[0][0], data[0][1])
+  window.updateTable("hide", 2)
   # window.updateFirstAugmentStats("Shock Treatment", getAugmentPlacement("Shock Treatment", 3))
   # # while True:
   # #     # parent = QMainWindow()
@@ -181,7 +182,8 @@ def testing():
   #   }
   # """))
   # window.updateTable("show", 3)
-  time.sleep(3)
+  window.updateTable("show", 2)
+  time.sleep(2)
 
   # # window.show()
   # #     # table = CreateTable(window, data, 2, 1920, 1080)
