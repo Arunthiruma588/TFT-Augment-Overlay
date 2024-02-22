@@ -86,8 +86,7 @@ def set_viewport_size(driver, width, height):
     driver.set_window_size(*window_size)
 
 
-# Referenced from https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
-# and https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed
+# Referenced from https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed
 
 def fetchStats():
     options = webdriver.ChromeOptions()
@@ -108,7 +107,7 @@ def fetchStats():
     time.sleep(1) 
 
     # Gets the HTML for the augment names from tactics.tools by XPATH
-    # Helpful source for XPATH: https://www.youtube.com/watch?v=yZY6-XSTveA&ab_channel=AutomatewithJonathan
+    # Helpful source for understanding XPATH: https://www.youtube.com/watch?v=yZY6-XSTveA&ab_channel=AutomatewithJonathan
 
     augHTML = driver.find_elements(By.XPATH, value="//*[contains(@class, 'pl-[6px]') and contains(@class, 'font-roboto') and contains(@class, 'font-normal') and contains(@class, 'truncate')]")
 
@@ -163,30 +162,30 @@ def getAugmentPlacement(augmentName, stage):
     result = ""
 
     try:
-        sqliteConnection = sqlite3.connect('Augment_Stats.db')
-        cursor = sqliteConnection.cursor()
+        con = sqlite3.connect('Augment_Stats.db')
+        cur = con.cursor()
 
-        sqlite_getAugment = ""
+        getAugment = ""
 
         if(stage == 2):
-            sqlite_getAugment = "SELECT first FROM AugmentTable WHERE augmentName=?;"
+            getAugment = "SELECT first FROM AugmentTable WHERE augmentName=?;"
         elif(stage == 3):
-            sqlite_getAugment = "SELECT second FROM AugmentTable WHERE augmentName=?;"
+            getAugment = "SELECT second FROM AugmentTable WHERE augmentName=?;"
         elif(stage == 4):
-            sqlite_getAugment = "SELECT third FROM AugmentTable WHERE augmentName=?;"
+            getAugment = "SELECT third FROM AugmentTable WHERE augmentName=?;"
 
-        data_tuple = (augmentName,)
-        cursor.execute(sqlite_getAugment, data_tuple)
-        result = cursor.fetchall()
-        sqliteConnection.commit()
+        data = (augmentName,)
+        cur.execute(getAugment, data)
+        result = cur.fetchall()
+        con.commit()
 
-        cursor.close()
+        cur.close()
 
     except sqlite3.Error as error:
         print("Failed to retrieve value from AugmentTable", error)
     finally:
-        if sqliteConnection:
-            sqliteConnection.close()
+        if con:
+            con.close()
     try:
         print(result[0][0])
         return result[0][0]
