@@ -1,7 +1,7 @@
 # Teamfight Tactics Augment Overlay
 
-[![Windows Installation](https://img.shields.io/badge/Windows-Supported-green)](#system-requirements)
-[![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)](https://python.com/downloads/)
+[![Windows Installation](https://img.shields.io/badge/Windows-10%20%7C%2011-green)](#system-requirements)
+[![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)](https://python.org/downloads/)
 [![License](https://img.shields.io/github/license/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay)](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE)
 
 Overlay that displays live average augment placements from [tactics.tools/augments](https://tactics.tools/augments) during augment selection.
