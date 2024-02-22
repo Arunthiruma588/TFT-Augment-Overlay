@@ -8,74 +8,73 @@ from selenium.webdriver.common.by import By
 
 def dropTableDatabase():
   try:
-      sqliteConnection = sqlite3.connect('Augment_Stats.db')
-      cursor = sqliteConnection.cursor()
-      print("Connected to SQLite")
+      con = sqlite3.connect('Augment_Stats.db')
+      cur = con.cursor()
+      print("Connected to SQLite3 Database")
 
-      sqlite_delete_table = """DROP TABLE IF EXISTS AugmentTable;"""
+      delete_table = """DROP TABLE IF EXISTS AugmentTable;"""
 
-      cursor.execute(sqlite_delete_table)
-      sqliteConnection.commit()
+      cur.execute(delete_table)
+      con.commit()
       print("Successfully deleted table: AugmentTable")
 
-      cursor.close()
+      cur.close()
 
   except sqlite3.Error as error:
       print("Failed to delete AugmentTable", error)
   finally:
-      if sqliteConnection:
-          sqliteConnection.close()
-          print("The SQLite connection is closed")
+      if con:
+        con.close()
+        print("SQLite3 database connection closed")
 
-# Referenced from https://pynative.com/python-sqlite/#h-create-sqlite-table-from-python
+# Referenced from https://docs.python.org/3/library/sqlite3.html
 # Creates the table in the database Augment_Stats which will store the augments names and avg placements from tactics.tools in a table
 
 def createTableDatabase():
   try:
-      sqliteConnection = sqlite3.connect('Augment_Stats.db')
-      cursor = sqliteConnection.cursor()
-      print("Connected to SQLite")
+      con = sqlite3.connect('Augment_Stats.db')
+      cur = con.cursor()
+      print("Connected to SQLite3 Database")
 
-      sqlite_create_table = """CREATE TABLE AugmentTable (augmentName TEXT NOT NULL UNIQUE PRIMARY KEY, first TEXT, second TEXT, third TEXT);"""
+      create_table = """CREATE TABLE AugmentTable (augmentName TEXT NOT NULL UNIQUE PRIMARY KEY, first TEXT, second TEXT, third TEXT);"""
 
-      cursor.execute(sqlite_create_table)
-      sqliteConnection.commit()
+      cur.execute(create_table)
+      con.commit()
       print("Successfully created table: AugmentTable")
 
-      cursor.close()
+      cur.close()
 
   except sqlite3.Error as error:
       print("Failed to create AugmentTable", error)
   finally:
-      if sqliteConnection:
-          sqliteConnection.close()
-          print("The SQLite connection is closed")
+      if con:
+          con.close()
+          print("SQLite3 database connection closed")
 
-# Referenced from https://pynative.com/python-sqlite-insert-into-table/
+# Referenced from https://docs.python.org/3/library/sqlite3.html
           
 def insertVaribleIntoTable(augmentName, first, second, third):
     try:
-        sqliteConnection = sqlite3.connect('Augment_Stats.db')
-        cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
+        con = sqlite3.connect('Augment_Stats.db')
+        cur = con.cursor()
+        print("Connected to SQLite3 Database")
 
-        sqlite_insert_with_param = """INSERT INTO AugmentTable
-                          (augmentName, first, second, third) 
-                          VALUES (?, ?, ?, ?);"""
+        insert_variables = """INSERT INTO AugmentTable (augmentName, first, second, third) VALUES (?, ?, ?, ?);"""
 
-        data_tuple = (augmentName, first, second, third)
-        cursor.execute(sqlite_insert_with_param, data_tuple)
-        sqliteConnection.commit()
-        print("Python Variables inserted successfully into AugmentTable")
+        data = (augmentName, first, second, third)
 
-        cursor.close()
+        cur.execute(insert_variables, data)
+        con.commit()
+        print("Variables successfully inserted into AugmentTable")
+
+        cur.close()
 
     except sqlite3.Error as error:
-        print("Failed to insert Python variable into AugmentTable", error)
+        print("Failed to insert variables into AugmentTable", error)
     finally:
-        if sqliteConnection:
-            sqliteConnection.close()
-            print("The SQLite connection is closed")
+        if con:
+            con.close()
+            print("SQLite3 database connection closed")
 
 # Taken from https://stackoverflow.com/questions/37181403/how-to-set-browser-viewport-size for changing viewport of website in JS using selenium
 
@@ -87,7 +86,7 @@ def set_viewport_size(driver, width, height):
     driver.set_window_size(*window_size)
 
 
-# From https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
+# Referenced from https://www.scrapingbee.com/blog/selenium-python/#chrome-headless-mode
 # and https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed
 
 def fetchStats():
