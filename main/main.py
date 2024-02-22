@@ -83,6 +83,10 @@ def main():
                 
         print("finished last augment")
         window.close()
+        
+        if onscreen("./captures/tft_exit_now.png") or onscreen("./captures/tft_play_again.png"):
+            exit()
+            
     elif screen_size[0] == 3840 and screen_size[1] == 2160:
         # Currently we have not tested 4K window support, these image and statsWindowPosition values are rough estimates and will produce bugs
         # Feel free to change this if your resolution is 4K
