@@ -31,19 +31,22 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
 
 ## Patch Notes
 
-[Upcoming] **14.4** - **DISCLAIMER - Please allow us to test whether the tool works with Vanguard**. More info in [Frequently Asked Questions](#frequently-asked-questions)
+[Upcoming] **14.5+** - **DISCLAIMER - Please allow us to test whether the tool works with Vanguard**. More info in [Frequently Asked Questions](#frequently-asked-questions)
 
-[Live] **14.3** - The Teamfight Tactics Augment Overlay tool is safe to use and working as intended.
+[Live] **14.4** - The Teamfight Tactics Augment Overlay tool should be safe to use and working as intended. (This has not been verified yet)
+
+[Past] **14.3** - The Teamfight Tactics Augment Overlay tool is safe to use and working as intended.
 
 ## Installation  
   ### System Requirements
   
+  * #### Windowsx64
   * #### Windows 10, Windows 11
   * #### 1920 x 1080 resolution (1080p)
   
   We currently do not support Mac or Linux as our testing for those devices is limited.  
   
-  As of upcoming patch 14.4 in League of Legends, Riot Games has made the decision to stop supporting Windows 7, 8, and 8.1, meaning a Windows installation of 10 or later is required to play. If you do not have those installed we recommend getting a device or license key that has those versions of Windows as soon as you can.
+  As of upcoming patch 14.4 in League of Legends, Riot Games has made the decision to stop supporting Windows 7, 8, and 8.1, meaning a Windows installation of 10 or later is required to play. If you do not have those installed we recommend getting a device or license key that has those versions of Windows as soon as you can. We have only tested on Windowsx64 architecture and used programs supporting this architecture so we are unsure of using Windowsx32.
 
   Currently our tool only supports 1920 x 1080 resolution. If your monitor supports 1920 x 1080 resolution we recommend switching resolutions before using the Augment Overlay tool, otherwise the tool may not function correctly.
   
@@ -56,7 +59,7 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
 ## Frequently Asked Questions
   <details>
   <summary>
-  <b>Is the Teamfight Tactics Augment Overlay tool allowed in TFT?</b>
+  <b>Are augment overlay tools allowed in TFT?</b>
   </summary>
 
 
@@ -75,12 +78,12 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
   </summary>
    
 
-  - TLDR: Patch 14.3: No. Patch 14.4: We don't know.  
+  - TLDR: Patch 14.3, 14.4: No. Patch 14.5+: We don't know.  
 
 
-  - Patch 14.3 - overlays and tools are allowed in TFT. In addition, we have been testing for 2 weeks with this tool and our account has not been banned or flagged.  
-
-  - Patch 14.4 - Riot is releasing Vanguard, their kernel anti-cheat, to the League of Legends Client and thus Teamfight Tactics this patch. Although our tool does not interact with in-game files at all, we are unsure of whether Vanguard will flag it as a cheat or not, and thus we do not know. We are not liable or responsible for any damages or suspensions placed on Riot Accounts using our Teamfight Tactics Augment Overlay tool if it is flagged by Vanguard during TFT games when Vanguard is released.
+  - Patch 14.3, 14.4 - overlays and tools are allowed in TFT. In addition, we have been testing for 2 weeks with this tool and our account has not been banned or flagged.
+    
+  - Patch 14.5+ - Riot is releasing Vanguard, their kernel anti-cheat, to the League of Legends Client and thus Teamfight Tactics this patch. Here is [proof](https://www.leagueoflegends.com/en-us/news/game-updates/patch-14-4-notes/) in their 14.4 patch notes under section Vanguard. Although our tool does not interact with in-game files at all, we are unsure of whether Vanguard will flag it as a cheat or not, and thus we do not know. We are not liable or responsible for any damages or suspensions placed on Riot Accounts using our Teamfight Tactics Augment Overlay tool if it is flagged by Vanguard during TFT games when Vanguard is released.
  </details>
  
 ## License
@@ -100,9 +103,9 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
   - The import of [pytesseract 0.3.10](https://pypi.org/project/pytesseract/) is licensed under the [Apache Software License (Apache Software License 2.0)](https://www.apache.org/licenses/LICENSE-2.0).
   - The import of [python image-search 1.3.0](https://pypi.org/project/python-imagesearch/) is licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).
   - The import of [pillow 10.2.0](https://pypi.org/project/pillow/) is licensed under the [HPND License](https://directory.fsf.org/wiki/License:HPND).
-- testing.py has no relevant licenses are it is only used to manually test changes.
+- testing.py has no relevant licenses and it is only used to manually test changes.
 
-This compiled list shows all of the code in this repository used,referenced, or imported from other sources has been cited/documented and can legally fall under the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE) in use. 
+This compiled list shows all of the code in this repository used, referenced, or imported from other sources has been cited/documented and is legally compatible under the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE) in use. 
 
 Each distribution made by cloning the repository **must make sure they have a copy of the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE)**.
 
@@ -111,8 +114,8 @@ Each distribution made by cloning the repository **must make sure they have a co
 *We, us* defined as owners and contributors of the Teamfight Tactics Augment Overlay tool want to inform you about the way that the Teamfight Tactics Augment Overlay tool handles and collects information. All information collected and stored by the tool will never be transferred to any other network/party/user unless specifically done so by the user activating or operating the tool. Unless consensually shared with us by the user for development fixes, **we will never ask for access to any of our users' augmentName screenshots or other personal or private information**. All such information shared with us will only be used for development purposes and will never be collected or transferred to any other network/party/user.
 
 ## Acknowledgment
-- We want to firstly acknowledge and thank [Riot Games](https://riotgames.com), the owners and creators of [Teamfight Tactics](https://teamfighttactics.leagueoflegends.com/).
-- Secondly we want to acknowledge and thank the creators and contributers of [tactics.tools](https://tactics.tools). Our tool is meant to be an extension of their fantastic analysis of stats in Teamfight Tactics and our tool cannot function without their amazing work.
+- Firstly, we want to acknowledge and thank [Riot Games](https://riotgames.com), the owners and creators of [Teamfight Tactics](https://teamfighttactics.leagueoflegends.com/).
+- Secondly, we want to thank the creators and contributers of [tactics.tools](https://tactics.tools). Our tool is meant to be an extension of their fantastic analysis of stats in Teamfight Tactics and our tool cannot function without their amazing work. Please check them out at [tactics.tools](https://tactics.tools), they have way more stats to offer than we do.
 - Lastly we want to acknowledge and thank our contributers for all their hard work.
 ### Contributors
 - [KonstantinLiehr](https://github.com/KonstantinLiehr)
