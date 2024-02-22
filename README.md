@@ -76,6 +76,27 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
    Patch 14.4 - Riot is releasing Vanguard, their kernel anti-cheat, to the League of Legends Client and thus Teamfight Tactics this patch. Although our tool does not interact with in-game files at all, we are unsure of whether Vanguard will flag it as a cheat or not, and thus we do not know. We are not liable or responsible for any damages or suspensions placed on Riot Accounts using our Teamfight Tactics Augment Overlay tool if it is flagged by Vanguard during TFT games when Vanguard is released.
    
 ## License
+- The main code is licensed under [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE).
+- Licenses to imports used in this code fall under the [Apache Software License (2.0)](https://www.apache.org/licenses/LICENSE-2.0), the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt), and the [HPND License](https://directory.fsf.org/wiki/License:HPND) which are all compatable with [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE)
+- fetchStats.py (changes if any can be found and explained in (docs/fetchStats.md)[docs/fetchStats.md]):
+  - The import of [Selenium 4.16.0](https://pypi.org/project/selenium/4.16.0/) is licensed under the [Apache Software License (2.0)](https://www.apache.org/licenses/LICENSE-2.0).
+  - The import of [webdriver-manager 4.0.1](https://pypi.org/project/webdriver-manager/) is licensed under the [Apache Software License](https://www.apache.org/licenses/).
+  - The import of [requests 2.31.0](https://pypi.org/project/requests/) is licensed under the [Apache Software License (Apache 2.0)](https://www.apache.org/licenses/LICENSE-2.0).
+  - Functions *dropTableDatabase()*, *createTableDatabase()*, *insertVariableIntoTable(augmentName, first, second, third)*, and *getAugmentPlacement(augmentName, stage)* are referenced from the [python docs on sqlite3](https://docs.python.org/3/library/sqlite3.html) which is licensed under (PSF License Agreement)[https://docs.python.org/3/license.html#psf-license-agreement-for-python-release] which is compatible with [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE).
+  - Function *set_viewport_size(driver, width, height)* is copied with no changes from a [stackoverflow](https://stackoverflow.com/questions/37181403/how-to-set-browser-viewport-size) user response by user Florent B. on May 12, 2016 at 9:49. Stackoverflow code is licensed under the [CC BY-SA 4.0 Deed](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) which is compatible with [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE).
+  - The first part of function *fetchStats()* used to address SSL certificate errors was built referencing a [response on stackoverflow](https://stackoverflow.com/questions/65755603/selenium-ssl-client-socket-impl-cc-handshake-failed) by user J.M. Arnold on Jan 26, 2021 at 18:17. Stackoverflow code is licensed under the [CC BY-SA 4.0 Deed](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) which is compatible with [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE).
+- statsWindowQt5.py (changes if any can be found and explained in (docs/statsWindowQt5.md)[docs/statsWindowQt5.md]):
+  - The import of [PyQt5 5.15.10](https://pypi.org/project/PyQt5/) was used to build statsWindowQt5.py and is licensed under [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE) and thus is compatible as our license is the same [license](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE).
+- identification.py (changes if any can be found and explained in (docs/identification.md)[docs/identification.md]):
+  - The import of [pytesseract 0.3.10](https://pypi.org/project/pytesseract/) is licensed under the [Apache Software License (Apache Software License 2.0)](https://www.apache.org/licenses/LICENSE-2.0).
+  - The import of [python image-search 1.3.0](https://pypi.org/project/python-imagesearch/) is licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).
+  - The import of [pillow 10.2.0](https://pypi.org/project/pillow/) is licensed under the [HPND License](https://directory.fsf.org/wiki/License:HPND).
+  - The import of [setuptools 69.0.3](https://pypi.org/project/setuptools/69.0.3/) is licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).
+- testing.py has no relevant licenses are it is only used to manually test changes.
+
+This compiled list shows all of the code in this repository used,referenced, or imported from other sources has been cited/documented and can legally fall under the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE) in use. 
+
+Each distribution made by cloning the repository **must make sure they have a copy of the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE)**.
 ## Privacy Policy
 ## Acknowledgment
   ### Contributors
