@@ -100,7 +100,6 @@ Overlay that displays live average augment placements from [tactics.tools/augmen
   - The import of [pytesseract 0.3.10](https://pypi.org/project/pytesseract/) is licensed under the [Apache Software License (Apache Software License 2.0)](https://www.apache.org/licenses/LICENSE-2.0).
   - The import of [python image-search 1.3.0](https://pypi.org/project/python-imagesearch/) is licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).
   - The import of [pillow 10.2.0](https://pypi.org/project/pillow/) is licensed under the [HPND License](https://directory.fsf.org/wiki/License:HPND).
-  - The import of [setuptools 69.0.3](https://pypi.org/project/setuptools/69.0.3/) is licensed under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).
 - testing.py has no relevant licenses are it is only used to manually test changes.
 
 This compiled list shows all of the code in this repository used,referenced, or imported from other sources has been cited/documented and can legally fall under the [GPLv3](https://github.com/Arunthiruma588/TFT-Tactics.tools-Augment-Overlay/blob/main/LICENSE) in use. 
