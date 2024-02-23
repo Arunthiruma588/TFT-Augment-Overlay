@@ -10,7 +10,7 @@
   
 </div>
 
-## Demo
+## Demo Video (Click the Image)
 
 [![Demo](assets/TFTOverlayAugmentToolThumbnail.png)](https://www.youtube.com/watch?v=5aFtTXtGrx8)
 
